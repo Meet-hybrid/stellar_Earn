@@ -26,7 +26,8 @@ export default function GlobalError({
             Something Went Wrong
           </div>
           <p className="text-zinc-400 text-lg">
-            We&apos;ve encountered an unexpected error. Our team has been notified.
+            We&apos;ve encountered an unexpected error. Our team has been
+            notified.
           </p>
         </div>
 

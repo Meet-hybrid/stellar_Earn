@@ -4,13 +4,56 @@ import { cleanup } from '@testing-library/react';
 import { beforeAll, afterEach, afterAll, expect } from 'vitest';
 import { server } from './mocks/server';
 
-// Custom matcher to support toBeInTheDocument without external dependencies
+// Custom matcher to support testing without external dependencies
 expect.extend({
   toBeInTheDocument(received) {
     const pass = received !== null && received !== undefined;
     return {
       pass,
       message: () => `expected element to be in the document`,
+    };
+  },
+  toHaveTextContent(received, expected: string | RegExp) {
+    const content = received?.textContent || '';
+    const pass =
+      expected instanceof RegExp
+        ? expected.test(content)
+        : content.includes(String(expected));
+    return {
+      pass,
+      message: () =>
+        `expected element to have text content matching ${expected}`,
+    };
+  },
+  toHaveClass(received, expected: string) {
+    const pass = received?.classList?.contains(expected) ?? false;
+    return {
+      pass,
+      message: () => `expected element to have class ${expected}`,
+    };
+  },
+  toHaveAttribute(received, attribute: string, value?: string) {
+    const hasAttr = received?.hasAttribute(attribute) ?? false;
+    const attrValue = received?.getAttribute(attribute);
+    const pass = value ? hasAttr && attrValue === value : hasAttr;
+    return {
+      pass,
+      message: () =>
+        `expected element to have attribute ${attribute}${value ? `=${value}` : ''}`,
+    };
+  },
+  toBeDisabled(received) {
+    const pass = received?.disabled ?? false;
+    return {
+      pass,
+      message: () => `expected element to be disabled`,
+    };
+  },
+  toBeEmptyDOMElement(received) {
+    const pass = (received?.textContent?.trim() ?? '') === '';
+    return {
+      pass,
+      message: () => `expected element to be empty`,
     };
   },
 });
