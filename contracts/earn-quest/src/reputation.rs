@@ -1,8 +1,8 @@
 use crate::errors::Error;
 use crate::events;
 use crate::storage;
-use crate::types::{Badge, BadgeType, Role, UserBadges, UserCore};
-use soroban_sdk::{Address, Env, String, Symbol, Vec, symbol_short};
+use crate::types::{Badge, BadgeType, Role, UserCore};
+use soroban_sdk::{Address, Env, String, Symbol, symbol_short};
 
 const LEVEL_2_XP: u64 = 300;
 const LEVEL_3_XP: u64 = 600;

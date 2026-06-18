@@ -1288,9 +1288,9 @@ impl EarnQuestContract {
     pub fn validate_reward_with_oracle(
         env: Env,
         reward_asset: Address,
-        reward_amount: i128,
+        _reward_amount: i128,
         reference_asset: Address,
-        max_deviation_percent: u32,
+        _max_deviation_percent: u32,
     ) -> Result<(), Error> {
         let price = Self::get_price(env, reward_asset, reference_asset, 300)?;
         
