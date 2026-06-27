@@ -1,4 +1,5 @@
 'use client';
+
 import Link from 'next/link';
 import { use } from 'react';
 import {
@@ -10,7 +11,6 @@ import { AdminLayout, QuestEditor, Notifications } from '@/components/admin';
 import { NotificationContext } from '@/lib/hooks/useAdmin';
 import { updateQuestStatus } from '@/lib/api/admin';
 import type { QuestFormData, QuestStatus } from '@/lib/types/admin';
-import Link from 'next/link';
 
 interface EditQuestContentProps {
   questId: string;
@@ -43,20 +43,22 @@ function EditQuestContent({ questId }: EditQuestContentProps) {
   const handleStatusChange = async (status: QuestStatus) => {
     try {
       await updateQuestStatus(questId, status);
+
       notificationState.addNotification({
         type: 'success',
         title: 'Status Updated',
         message: `Quest status changed to ${status}.`,
       });
-      // Reload the quest data
+
       window.location.reload();
       return { success: true };
-    } catch (err) {
+    } catch {
       notificationState.addNotification({
         type: 'error',
         title: 'Update Failed',
         message: 'Failed to update quest status.',
       });
+
       return { success: false, error: 'Failed to update status' };
     }
   };
@@ -86,6 +88,7 @@ function EditQuestContent({ questId }: EditQuestContentProps) {
         <p className="mt-1 text-sm text-red-600 dark:text-red-300">
           {error || 'The requested quest could not be found.'}
         </p>
+
         <Link
           href="/admin"
           className="mt-4 inline-flex items-center gap-2 rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-700"
@@ -99,19 +102,12 @@ function EditQuestContent({ questId }: EditQuestContentProps) {
   return (
     <>
       <div className="space-y-6">
-        {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-          <Link
-            href="/admin"
-            className="hover:text-zinc-700 dark:hover:text-zinc-300"
-          >
+          <Link href="/admin" className="hover:text-zinc-700 dark:hover:text-zinc-300">
             Admin
           </Link>
           <span>/</span>
-          <Link
-            href="/admin/quests"
-            className="hover:text-zinc-700 dark:hover:text-zinc-300"
-          >
+          <Link href="/admin/quests" className="hover:text-zinc-700 dark:hover:text-zinc-300">
             Quests
           </Link>
           <span>/</span>
@@ -120,7 +116,6 @@ function EditQuestContent({ questId }: EditQuestContentProps) {
           </span>
         </nav>
 
-        {/* Editor */}
         <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
           <QuestEditor
             quest={quest}
@@ -130,6 +125,7 @@ function EditQuestContent({ questId }: EditQuestContentProps) {
           />
         </div>
       </div>
+
       <Notifications
         notifications={notificationState.notifications}
         onDismiss={notificationState.removeNotification}
@@ -144,12 +140,14 @@ interface PageProps {
 
 export default function EditQuestPage({ params }: PageProps) {
   const resolvedParams = use(params);
+
   const {
     isAdmin,
     adminUser,
     isLoading: accessLoading,
     error: accessError,
   } = useAdminAccess();
+
   const notificationState = useNotificationState();
 
   if (accessLoading) {
@@ -173,9 +171,11 @@ export default function EditQuestPage({ params }: PageProps) {
           <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-2">
             Access Denied
           </h1>
+
           <p className="text-zinc-500 dark:text-zinc-400 mb-6">
             {accessError || 'You do not have permission to access this page.'}
           </p>
+
           <Link
             href="/dashboard"
             className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-blue-700"
